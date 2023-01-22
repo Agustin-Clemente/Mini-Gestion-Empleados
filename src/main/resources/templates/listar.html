@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head th:replace="layout :: head">
+       
+        <meta charset="UTF-8">
+        
+          </head>
+    <body>
+        <header th:replace="layout :: header">
+        </header>
+        
+        <div class="py-4 ml-5 mr-5">
+            <div class="card bg-light">
+                <div class="card-header" th:text="${titulo}"></div>
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <a th:href="@{/formulario}" class="btn btn-primary">Agregar empleado</a>
+                        
+                        <a th:href="@{/pdf}" class="btn btn-secondary">Exportar a PDF</a>
+                        
+                        <a th:href="@{/excel}" class="btn btn-success">Exportar a Excel</a>
+                    </h4>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Mail</th>
+                                <th>Teléfono</th>
+                                <th>Sexo</th>
+                                <th>Salario</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="empleado : ${empleados}">
+                                <td th:text="${empleado.id}"></td>
+                                <td th:text="${empleado.nombre}"></td>
+                                <td th:text="${empleado.apellido}"></td>
+                                <td th:text="${empleado.mail}"></td>
+                                <td th:text="${empleado.telefono}"></td>
+                                <td th:text="${empleado.sexo}"></td>
+                                <td th:text="${empleado.salario}"></td>
+                                <td th:text="${empleado.fecha}"></td>
+                                <td><a class="btn btn-info btn-sm" th:href="@{/ver/} + ${empleado.id}">Detalles</a></td>
+                                <td sec:authorize="hasRole('ADMIN')"><a class="btn btn-warning btn-sm" th:href="@{/formulario/} + ${empleado.id}">Editar</a></td>
+                                <td sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger btn-sm" th:href="@{/eliminar/} + ${empleado.id}" onclick="return confirm ('¿Desea eliminar al empleado?');">Eliminar</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <nav th:replace="paginador :: paginator"></nav>
+                </div>
+            </div>
+        </div>
+
+        <footer th:replace="layout :: footer">
+            </footer>
+    </body>
+</html>
